@@ -6,6 +6,7 @@ from typing import Any, Callable
 import aiohttp
 import requests
 import websockets
+from aiohttp_socks import ProxyConnector
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(message)s")
 
@@ -66,8 +67,8 @@ class GraphqlClient:
         request_body = self.__request_body(
             query=query, variables=variables, operation_name=operation_name
         )
-
-        async with aiohttp.ClientSession() as session:
+        connector = self.options.pop('connector')
+        async with aiohttp.ClientSession(connector=connector) as session:
             async with session.post(
                 self.endpoint,
                 json=request_body,
