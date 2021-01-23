@@ -62,12 +62,12 @@ class GraphqlClient:
         variables: dict = None,
         operation_name: str = None,
         headers: dict = {},
+        connector=None,
     ):
         """Make asynchronous request to graphQL server."""
         request_body = self.__request_body(
             query=query, variables=variables, operation_name=operation_name
         )
-        connector = self.options.pop('connector')
         async with aiohttp.ClientSession(connector=connector) as session:
             async with session.post(
                 self.endpoint,
