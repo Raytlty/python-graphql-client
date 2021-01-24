@@ -69,12 +69,10 @@ class GraphqlClient:
             query=query, variables=variables, operation_name=operation_name
         )
         async with aiohttp.ClientSession(connector=connector) as session:
-            async with session.post(
-                self.endpoint,
-                json=request_body,
-                headers={**self.headers, **headers},
-            ) as response:
-                return await response.json()
+            async with session.post(self.endpoint,
+                                    json=request_body,
+                                    headers={**self.headers, **headers}) as resp:
+                return await resp.json()
 
     async def subscribe(
         self,
